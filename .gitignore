@@ -105,6 +105,7 @@ user_song_list.h
 
 # clangd
 compile_commands.json
+compile_commands.events.json
 .clangd/
 .cache/
 

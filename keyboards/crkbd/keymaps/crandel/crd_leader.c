@@ -1,39 +1,34 @@
 #include QMK_KEYBOARD_H
+
+void umlauts(uint8_t code){
+    tap_code(KC_PSCR);
+    tap_code16(S(KC_QUOT));
+    tap_code(code);
+}
+
 void leader_end_user(void) {
   if (leader_sequence_one_key(KC_C)) {
-    register_code(KC_LSFT);
-    tap_code16(C(KC_C));
-    unregister_code(KC_LSFT);
+    shifted_letters(KC_C);
     return;
   }
   if (leader_sequence_one_key(KC_V)) {
-    register_code(KC_LSFT);
-    tap_code16(C(KC_V));
-    unregister_code(KC_LSFT);
+    shifted_letters(KC_V);
     return;
   }
   if (leader_sequence_one_key(KC_A)) {
-    tap_code(KC_PSCR);
-    tap_code16(S(KC_QUOT));
-    tap_code(KC_A);
+    umlauts(KC_A);
     return;
   }
   if (leader_sequence_one_key(KC_E)) {
-    tap_code(KC_PSCR);
-    tap_code16(S(KC_QUOT));
-    tap_code(KC_E);
+    umlauts(KC_E);
     return;
   }
   if (leader_sequence_one_key(KC_O)) {
-    tap_code(KC_PSCR);
-    tap_code16(S(KC_QUOT));
-    tap_code(KC_O);
+    umlauts(KC_O);
     return;
   }
   if (leader_sequence_one_key(KC_U)) {
-    tap_code(KC_PSCR);
-    tap_code16(S(KC_QUOT));
-    tap_code(KC_U);
+    umlauts(KC_U);
     return;
   }
   if (leader_sequence_one_key(KC_Q)) {

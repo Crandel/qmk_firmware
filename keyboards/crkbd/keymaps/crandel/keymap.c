@@ -17,6 +17,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include QMK_KEYBOARD_H
+#ifdef DEBUG_ENABLE
+#include "print.h"
+#endif
+
 #include "crd_keycodes.h"
 
 
@@ -24,6 +28,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #  include <stdio.h>
 #  include "crd_oled.c"
 #endif
+
+#include "crd_helpers.c"
 
 #ifdef LEADER_ENABLE
 #  include "crd_leader.c"
@@ -42,89 +48,39 @@ void set_lang(bool lng){
   }
 }
 
-#ifdef RGBLIGHT_ENABLE
-#  define CR_HSV_BLUE        170, 255, 55
-#  define CR_HSV_CYAN        128, 255, 55
-#  define CR_HSV_GOLD         36, 255, 55
-#  define CR_HSV_GREEN        85, 255, 55
-#  define CR_HSV_MAGENTA     213, 255, 55
-#  define CR_HSV_ORANGE       21, 255, 55
-#  define CR_HSV_PURPLE      191, 255, 55
-#  define CR_HSV_RED           0, 255, 55
-#  define CR_HSV_YELLOW       43, 255, 55
-
-void set_indicators_state(uint8_t hue, uint8_t sat, uint8_t val){
-  rgblight_sethsv(hue, sat, val);
-}
-
-#endif // RGBLIGHT_ENABLE
+layer_state_t default_layer_state_set_user(layer_state_t state) {
+  uprintf("current state %d", state)
+  switch (biton32(state)) {
+    case COLMAK_L:
+      set_indicators_state(CR_HSV_GREEN, "COLEMAK");
+      break;
+    case NUM_L:
+      set_indicators_state(CR_HSV_BLUE, "NUMBERS");
+      break;
+    case CHARS_L:
+      set_indicators_state(CR_HSV_GOLD, "CHARS");
+      break;
+    case MOUSE_L:
+      set_indicators_state(CR_HSV_ORANGE, "MOUSE");
+      break;
+    case GAME_L:
+      set_indicators_state(CR_HSV_RED, "GAMES");
+      break;
+  }
+  return state;
+};
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-  case TO_CLM:
-    if (record->event.pressed) {
-      #ifdef OLED_ENABLE
-      update_oled_layer("COLEMAK");
-      #endif // OLED_ENABLE
-      #ifdef RGBLIGHT_ENABLE
-      set_indicators_state(CR_HSV_GREEN);
-      #endif // RGBLIGHT_ENABLE
-    }
-    break;
-  case TO_NMB:
-    if (record->event.pressed) {
-      #ifdef OLED_ENABLE
-      update_oled_layer("NUMBERS");
-      #endif // OLED_ENABLE
-      #ifdef RGBLIGHT_ENABLE
-      set_indicators_state(CR_HSV_BLUE);
-      #endif // RGBLIGHT_ENABLE
-    }
-    break;
-  case TO_CHR:
-    if (record->event.pressed) {
-      #ifdef OLED_ENABLE
-      update_oled_layer("CHARS");
-      #endif // OLED_ENABLE
-      #ifdef RGBLIGHT_ENABLE
-      set_indicators_state(CR_HSV_GOLD);
-      #endif // RGBLIGHT_ENABLE
-    }
-    break;
-  case TO_MOS:
-    if (record->event.pressed) {
-      #ifdef OLED_ENABLE
-      update_oled_layer("MOUSE");
-      #endif // OLED_ENABLE
-      #ifdef RGBLIGHT_ENABLE
-      set_indicators_state(CR_HSV_ORANGE);
-      #endif // RGBLIGHT_ENABLE
-    }
-    break;
-  case TO_GAM:
-    if (record->event.pressed) {
-      #ifdef OLED_ENABLE
-      update_oled_layer("GAMES");
-      #endif // OLED_ENABLE
-      #ifdef RGBLIGHT_ENABLE
-      set_indicators_state(CR_HSV_RED);
-      #endif // RGBLIGHT_ENABLE
-    }
-    break;
   case TRM_COPY:
     if (record->event.pressed) {
       // when keycode TRM_COPY is pressed
-      register_code(KC_LSFT);
-      tap_code16(C(KC_C));
-      unregister_code(KC_LSFT);
+      shifted_letters(KC_C);
     }
     break;
   case TRM_PSTE:
     if (record->event.pressed) {
-      // when keycode TRM_PSTE is pressed
-      register_code(KC_LSFT);
-      tap_code16(C(KC_V));
-      unregister_code(KC_LSFT);
+      shifted_letters(KC_V);
     }
     break;
   case UML_SEQ:

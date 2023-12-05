@@ -70,9 +70,9 @@ bool oled_task_user(void) {
 
 void keyboard_post_init_user(void) {
   // Call the post init code.
+  debug_enable=true;
+  debug_matrix=true;
+  debug_keyboard=true;
   // update layer_str
-  snprintf(layer_str,
-           sizeof(layer_str),
-           "%s",
-           "Colemak");
+  update_oled_layer("Colemak");
 }

@@ -71,7 +71,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #  define RGBLIGHT_LIMIT_VAL 120
 #  define RGBLIGHT_SLEEP
 #  define RGBLIGHT_SPLIT
-#endif
+#  define CR_HSV_BLUE        170, 255, 55
+#  define CR_HSV_CYAN        128, 255, 55
+#  define CR_HSV_GOLD         36, 255, 55
+#  define CR_HSV_GREEN        85, 255, 55
+#  define CR_HSV_MAGENTA     213, 255, 55
+#  define CR_HSV_ORANGE       21, 255, 55
+#  define CR_HSV_PURPLE      191, 255, 55
+#  define CR_HSV_RED           0, 255, 55
+#  define CR_HSV_YELLOW       43, 255, 55
+#endif // RGBLIGHT_ENABLE
 
 #ifdef LEADER_ENABLE
 #  define LEADER_NO_TIMEOUT
