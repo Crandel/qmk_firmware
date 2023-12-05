@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include "crd_keycodes.h"
 #include QMK_KEYBOARD_H
 
 // Tap dance enums
@@ -77,12 +78,23 @@ static td_tap_t state_lay = {
 void finished_lay(tap_dance_state_t *state, void *user_data) {
     state_lay.state = cur_dance(state);
     switch (state_lay.state) {
-        case TD_SINGLE_TAP:  default_layer_set(COLMAK_L); break;
-        case TD_SINGLE_HOLD: default_layer_set(CHARS_L); break;
-        case TD_DOUBLE_TAP:  default_layer_set(NUM_L); break;
-        case TD_DOUBLE_HOLD: default_layer_set(MOUSE_L); break;
+        case TD_SINGLE_TAP:  register_code16(TO_CLM); break;
+        case TD_SINGLE_HOLD: register_code16(TO_CHR); break;
+        case TD_DOUBLE_TAP:  register_code16(TO_NMB); break;
+        case TD_DOUBLE_HOLD: register_code16(TO_MOS); break;
         default: break;
     }
+}
+
+void reset_lay(tap_dance_state_t *state, void *user_data) {
+    switch (state_lay.state) {
+        case TD_SINGLE_TAP:  unregister_code16(TO_CLM); break;
+        case TD_SINGLE_HOLD: unregister_code16(TO_CHR); break;
+        case TD_DOUBLE_TAP:  unregister_code16(TO_NMB); break;
+        case TD_DOUBLE_HOLD: unregister_code16(TO_MOS); break;
+        default: break;
+    }
+    state_lay.state = TD_NONE;
 }
 
 // Create an instance of 'td_tap_t' for the 'TD_LNG' tap dance.
@@ -170,7 +182,7 @@ void reset_sym(tap_dance_state_t *state, void *user_data) {
 }
 
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_LAY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, finished_lay, NULL),
+    [TD_LAY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, finished_lay, reset_lay),
     [TD_LNG] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, finished_lng, reset_lng),
     [TD_UKR] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, finished_ukr, reset_ukr),
     [TD_SYM] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, finished_sym, reset_sym)
