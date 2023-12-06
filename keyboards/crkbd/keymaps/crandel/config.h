@@ -20,12 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 // Disable options
-#ifndef NO_DEBUG
-#define NO_DEBUG
-#endif // !NO_DEBUG
-#ifndef NO_PRINT
-#define NO_PRINT
-#endif // !NO_PRINT
 
 /* Select hand configuration */
 #define DYNAMIC_KEYMAP_LAYER_COUNT 8

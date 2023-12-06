@@ -45,12 +45,20 @@ typedef struct {
 } td_tap_t;
 
 td_state_t cur_dance(tap_dance_state_t *state) {
-  uprintf("current count in cur_dance, %d, interrupted %d", state->count, state->interrupted);
+  #ifdef CONSOLE_ENABLE
+  uprintf("current count in cur_dance, %d, interrupted %d, pressed %d\n", state->count, state->interrupted, state->pressed);
+  #endif // CONSOLE_ENABLE
   if (state->count == 1) {
     if (state->interrupted || !state->pressed){
+      #ifdef CONSOLE_ENABLE
+      uprintf("return TD_SINGLE_TAP %d", TD_SINGLE_TAP);
+      #endif // CONSOLE_ENABLE
       return TD_SINGLE_TAP;
     } else {
       // Key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
+      #ifdef CONSOLE_ENABLE
+      uprintf("return TD_SINGLE_HOLD %d", TD_SINGLE_HOLD);
+      #endif // CONSOLE_ENABLE
       return TD_SINGLE_HOLD;
     }
   } else if (state->count == 2) {
@@ -58,10 +66,19 @@ td_state_t cur_dance(tap_dance_state_t *state) {
     // action when hitting 'pp'. Suggested use case for this return value is when you want to send two
     // keystrokes of the key, and not the 'double tap' action/macro.
     if (state->interrupted) {
+      #ifdef CONSOLE_ENABLE
+      uprintf("return TD_DOUBLE_SINGLE_TAP %d", TD_DOUBLE_SINGLE_TAP);
+      #endif // CONSOLE_ENABLE
       return TD_DOUBLE_SINGLE_TAP;
     } else if (state->pressed) {
+      #ifdef CONSOLE_ENABLE
+      uprintf("return TD_DOUBLE_HOLD %d", TD_DOUBLE_HOLD);
+      #endif // CONSOLE_ENABLE
       return TD_DOUBLE_HOLD;
     }
+    #ifdef CONSOLE_ENABLE
+    uprintf("return TD_DOUBLE_TAP %d", TD_DOUBLE_TAP);
+    #endif // CONSOLE_ENABLE
     return TD_DOUBLE_TAP;
   }
 
@@ -70,8 +87,14 @@ td_state_t cur_dance(tap_dance_state_t *state) {
   // an exception here to return a 'TD_TRIPLE_SINGLE_TAP', and define that enum just like 'TD_DOUBLE_SINGLE_TAP'
   if (state->count == 3) {
     if (state->interrupted || !state->pressed){
+      #ifdef CONSOLE_ENABLE
+      uprintf("return TD_TRIPLE_TAP %d", TD_TRIPLE_TAP);
+      #endif // CONSOLE_ENABLE
       return TD_TRIPLE_TAP;
     } else {
+      #ifdef CONSOLE_ENABLE
+      uprintf("return TD_TRIPLE_HOLD %d", TD_TRIPLE_HOLD);
+      #endif // CONSOLE_ENABLE
       return TD_TRIPLE_HOLD;
     }
   } else {
@@ -87,67 +110,101 @@ static td_tap_t state_lay = {
 
 void finished_lay(tap_dance_state_t *state, void *user_data) {
   state_lay.state = cur_dance(state);
-  uprintf("current state in finished_lay, %s", state_lay.state);
+  #ifdef CONSOLE_ENABLE
+  dprintf("finished_lay\n");
+  uprintf("current state in finished_lay, %d\n", state_lay.state);
+  #endif // CONSOLE_ENABLE
   switch (state_lay.state) {
     case TD_SINGLE_TAP:
-      dprint("finished_lay, single tap");
+      #ifdef CONSOLE_ENABLE
+      dprint("finished_lay, single tap\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(COLMAK_L);
       break;
     case TD_SINGLE_HOLD:
-      dprint("finished_lay, single hold");
+      #ifdef CONSOLE_ENABLE
+      dprint("finished_lay, single hold\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(CHARS_L);
       break;
     case TD_DOUBLE_TAP:
-      dprint("finished_lay, double tap");
+      #ifdef CONSOLE_ENABLE
+      dprint("finished_lay, double tap\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(NUM_L);
       break;
     case TD_DOUBLE_HOLD:
-      dprint("finished_lay, double hold");
+      #ifdef CONSOLE_ENABLE
+      dprint("finished_lay, double hold\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(MOUSE_L);
       break;
     case TD_TRIPLE_TAP:
-      dprint("finished_lay, triple tap");
+      #ifdef CONSOLE_ENABLE
+      dprint("finished_lay, triple tap\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(GAME_L);
       break;
     case TD_TRIPLE_HOLD:
-      dprint("finished_lay, triple hold");
+      #ifdef CONSOLE_ENABLE
+      dprint("finished_lay, triple hold\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(CHARS_L);
       break;
     default:
-      dprint("finished_lay, default");
+      #ifdef CONSOLE_ENABLE
+      dprint("finished_lay, default\n");
+      #endif // CONSOLE_ENABLE
       break;
     }
 }
 
 void reset_lay(tap_dance_state_t *state, void *user_data) {
-  uprintf("current state in reset_lay, %s", state_lay.state);
+  #ifdef CONSOLE_ENABLE
+  dprintf("reset_lay\n");
+  uprintf("current state in reset_lay, %d\n", state_lay.state);
+  #endif // CONSOLE_ENABLE
   switch (state_lay.state) {
     case TD_SINGLE_TAP:
-      dprint("reset_lay, single tap");
+      #ifdef CONSOLE_ENABLE
+      dprint("reset_lay, single tap\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(COLMAK_L);
       break;
     case TD_SINGLE_HOLD:
-      dprint("reset_lay, single hold");
+      #ifdef CONSOLE_ENABLE
+      dprint("reset_lay, single hold\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(CHARS_L);
       break;
     case TD_DOUBLE_TAP:
-      dprint("reset_lay, double tap");
+      #ifdef CONSOLE_ENABLE
+      dprint("reset_lay, double tap\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(NUM_L);
       break;
     case TD_DOUBLE_HOLD:
-      dprint("reset_lay, double hold");
+      #ifdef CONSOLE_ENABLE
+      dprint("reset_lay, double hold\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(MOUSE_L);
       break;
     case TD_TRIPLE_TAP:
-      dprint("reset_lay, triple tap");
+      #ifdef CONSOLE_ENABLE
+      dprint("reset_lay, triple tap\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(GAME_L);
       break;
     case TD_TRIPLE_HOLD:
-      dprint("reset_lay, triple hold");
+      #ifdef CONSOLE_ENABLE
+      dprint("reset_lay, triple hold\n");
+      #endif // CONSOLE_ENABLE
       default_layer_set(CHARS_L);
       break;
     default:
-      dprint("reset_lay, default");
+      #ifdef CONSOLE_ENABLE
+      dprint("reset_lay, default\n");
+      #endif // CONSOLE_ENABLE
       break;
     }
     state_lay.state = TD_NONE;
