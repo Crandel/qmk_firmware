@@ -8,11 +8,11 @@ enum layers {
   GAME_L = 4,
 };
 
-#define TO_CLM DF(COLMAK_L)
-#define TO_NMB DF(NUM_L)
-#define TO_CHR DF(CHARS_L)
-#define TO_MOS DF(MOUSE_L)
-#define TO_GAM DF(GAME_L)
+#define TO_CLM (1 << COLMAK_L)
+#define TO_NMB (1 << NUM_L)
+#define TO_CHR (1 << CHARS_L)
+#define TO_MOS (1 << MOUSE_L)
+#define TO_GAM (1 << GAME_L)
 
 enum custom_keycodes {
   TRM_COPY = SAFE_RANGE,
