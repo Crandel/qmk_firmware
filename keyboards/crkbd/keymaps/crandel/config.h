@@ -23,8 +23,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Select hand configuration */
 #define DYNAMIC_KEYMAP_LAYER_COUNT 8
-#define TAPPING_TERM 260
+#define TAPPING_TERM 160
 #define TAPPING_TOGGLE 3
+#define TAPPING_TERM_PER_KEY
 #define PERMISSIVE_HOLD
 //#define USE_MATRIX_I2C
 #ifdef KEYBOARD_crkbd_rev1_legacy
