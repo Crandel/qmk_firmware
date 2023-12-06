@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Select hand configuration */
 #define DYNAMIC_KEYMAP_LAYER_COUNT 8
-#define TAPPING_TERM 160
+#define TAPPING_TERM 360
 #define TAPPING_TOGGLE 3
 #define TAPPING_TERM_PER_KEY
 #define PERMISSIVE_HOLD
